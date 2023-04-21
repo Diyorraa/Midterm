@@ -43,5 +43,17 @@ def Chat():
     print("ChatGpt: ", completion.choices[0].message.content)
     return Chat()
 
+#counting tokens functions
+def is_valid_input(user_input):
+    return user_input.strip() != ""
+
+def count_tokens(message):
+    return len(message.split())
+
+def display_token_count(history):
+    user_tokens = sum(count_tokens(message["content"]) for message in history if message["role"] == "user")
+    assistant_tokens = sum(count_tokens(message["content"]) for message in history if message["role"] == "assistant")
+    print(f"\nUser tokens: {user_tokens}, Assistant tokens: {assistant_tokens}\n")
+
 # Start the program
 Chat()
