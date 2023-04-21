@@ -43,10 +43,8 @@ def Chat():
     print("ChatGpt: ", completion.choices[0].message.content)
     return Chat()
 
-#counting tokens functions
-def is_valid_input(user_input):
-    return user_input.strip() != ""
 
+#counting tokens function
 def count_tokens(message):
     return len(message.split())
 
