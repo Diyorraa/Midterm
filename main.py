@@ -22,6 +22,7 @@ def api_call(content, history):
     # JSON data to send to the API
     data = {
         "model": "gpt-3.5-turbo",
+        #Append history to the message to send to the API for context
         "messages": history + [
             {
                 "role": "user",
