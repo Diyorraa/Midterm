@@ -1,7 +1,7 @@
 import os
 import openai
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 
 while True:
@@ -11,7 +11,7 @@ while True:
     completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "user", "content": "Hello!"}
+            {"role": "user", "content": orig}
         ]
     )
-    print("ChatGpt: " + completion.choices[0].message)
+    print("ChatGpt: ", completion.choices[0].message.content)
