@@ -1,7 +1,7 @@
 import os
 import openai
 
-openai.api_key = "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"
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 while True:
