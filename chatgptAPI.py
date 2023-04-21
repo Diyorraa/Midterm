@@ -28,9 +28,9 @@ def GenerateImage():
 def Chat():
     userInput = input("You : ")
     # Verify the input
-    if userInput == "quit" or userInput == "q":
+    if userInput.lower() == "quit" or userInput == "q":
         return 0
-    if userInput == "image":
+    if userInput.lower() == "image":
         return GenerateImage()
     # Do the api call to chat
     completion = openai.ChatCompletion.create(
