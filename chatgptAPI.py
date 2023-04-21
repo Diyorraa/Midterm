@@ -26,6 +26,7 @@ def GenerateImage():
     return GenerateImage()
 
 def Chat():
+    history = []
     userInput = input("You : ")
     # Verify the input
     if userInput.lower() == "quit" or userInput == "q":
@@ -37,7 +38,7 @@ def Chat():
     if userInput.lower() == "reset":
         history = []
         print("\nHistory has been wiped.\n")
-    history.append({"role": "user", "content": user_input})
+    history.append({"role": "user", "content": userInput})
     # Do the api call to chat
     completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -47,6 +48,7 @@ def Chat():
     )    
     # Print the answer
     print("ChatGpt: ", completion.choices[0].message.content)
+    display_token_count(history)
     return Chat()
 
 
