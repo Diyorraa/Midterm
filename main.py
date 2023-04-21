@@ -1,23 +1,30 @@
 import requests
 import os
 from dotenv import load_dotenv
+import json
 
 # Load the API key from .env file
 load_dotenv()
 
 
 # API endpoint and get API key from .env file
-url = "https://api.openai.com/v1/chat/completions"
-apiKey = os.getenv('API_KEY')
+chat_url = "https://api.openai.com/v1/chat/completions"
+image_url = "https://api.openai.com/v1/images/generations"
 
-# Initial message to send to the API
-# message = "Hello, how can I help you today?"
+api_key = os.getenv('API_KEY')
+
+# Because we're using REST API, we need to set the headers for authentication
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {api_key}"
+}
+
 
 # History array to store the conversation context
 history = []
 
 
-def api_call(content, history):
+def chat_api_call(content, history):
 
     # JSON data to send to the API
     data = {
@@ -31,15 +38,9 @@ def api_call(content, history):
         ]
     }
 
-    # Because we're using REST API, we need to set the headers for authentication
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {apiKey}"
-    }
-
     # Make the API call
     try:
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(chat_url, headers=headers, json=data)
         response_json = response.json()
         
         # Print the response from the API
@@ -51,28 +52,51 @@ def api_call(content, history):
         print(f"Error: {e}")
 
 
+def generate_images(prompt):
+    data = {
+        "prompt": prompt,
+        "n": 2,
+        "size": "1024x1024"
+    }
+    response = requests.post(image_url, headers=headers, data=json.dumps(data))
+    response_data = response.json()["data"]
+    urls = [d["url"] for d in response_data]
+    
+    print("There is " + str(len(urls)) + " images generated:\n") if len(urls) == 1 else print("There are " + str(len(urls)) + " image generated:\n")    
+
+    for i in range(len(urls)):
+        print(urls[i] + "\n")
+
+
+#Make a user's choice as a variable with the default value of null
 
 # Keep asking for user input until they type "quit"
 while True:
 
-    # Get user input
-    user_input = input("You: ")
+    #User choose to generate images or chat
+    user_input = input("Do you want to generate images or chat? (type 'images' or 'chat'), Type quit to exit\nYou: ")
 
-    # Exit if user types "quit"
     if user_input.lower() == "quit" or user_input.lower() == "exit" or user_input.lower() == "q":
         break
 
-    #Reset history if user types "reset"
-    if user_input.lower() == "reset":
-        history = []
-        print("\nHistory has been wiped.\n")
-        continue
+    elif user_input.lower() == "images":
+        #loop through the user's input until they type "change"
+        while True:
+            print("Type 'change' to change your choice")
+            user_input = input("You: ")
+            if user_input.lower() == "change":
+                break
+            generate_images(user_input)
 
-    # Add user input to history
-    history.append({"role": "user", "content": user_input})
+    elif user_input.lower() == "chat":
+        while True:
+            print("Type 'change' to change your choice")
+            user_input = input("You: ")
+            if user_input.lower() == "change":
+                break
+            chat_api_call(user_input, history)
 
-    # Call the API
-    api_call(user_input, history)
-
+    else:
+        print("Please type 'images' or 'chat'")
 
 print("\nBye!")
