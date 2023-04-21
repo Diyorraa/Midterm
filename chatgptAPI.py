@@ -32,10 +32,16 @@ def Chat():
         return 0
     if userInput.lower() == "image":
         return GenerateImage()
+    if userInput.lower() == "tokens":
+        return display_token_count(history)
+    if userInput.lower() == "reset":
+        history = []
+        print("\nHistory has been wiped.\n")
+    history.append({"role": "user", "content": user_input})
     # Do the api call to chat
     completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=[
+        messages= history +[
             {"role": "user", "content": userInput}
         ]
     )    
