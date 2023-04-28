@@ -9,7 +9,7 @@ print("Enter 'chat' to chat and 'image' to generate image")
 print("By default you are in chat mode")
 
 def GenerateImage():
-    userInput = input("Give a description of the desired image : ")
+    userInput = input("\nGive a description of the desired image : ")
     # Verify the input
     if userInput == "quit" or userInput == "q":
         return 0
@@ -22,11 +22,11 @@ def GenerateImage():
         size="1024x1024"
     )
     # Print the url of the img
-    print("url : ", img.data[0].url)
+    print("\nurl : ", img.data[0].url)
     return GenerateImage()
 
 def Chat():
-    userInput = input("You : ")
+    userInput = input("\nYou : ")
     # Verify the input
     if userInput == "quit" or userInput == "q":
         return 0
@@ -37,10 +37,11 @@ def Chat():
         model="gpt-3.5-turbo",
         messages=[
             {"role": "user", "content": userInput}
-        ]
-    )    
+        ],
+        max_tokens=100
+    )   
     # Print the answer
-    print("ChatGpt: ", completion.choices[0].message.content)
+    print("\nChatGpt:", completion.choices[0].message.content)
     return Chat()
 
 # Start the program
