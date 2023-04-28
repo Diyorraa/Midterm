@@ -12,12 +12,6 @@ Replace YOUR_API_KEY by your key :
 export OPENAI_API_KEY="YOUR_API_KEY"
 ```
 
-## Install the package
-
-```bash
-pip install openai
-```
-
 ## Run the program
 
 ```bash
