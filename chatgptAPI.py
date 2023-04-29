@@ -29,11 +29,13 @@ max_tokens = 100
 def SetSize():
     global max_tokens
     userInput = input("\nDo you want a 'short' or a 'long' answer : ")
+    # Remove space at the end of the string
+    userInput = userInput.rstrip()
     while True:
-        if userInput == "short":
+        if userInput.lower() == "short":
             max_tokens = 100
             return
-        elif userInput == "long":
+        elif userInput.lower() == "long":
             max_tokens = 1024
             return
         else:
@@ -41,13 +43,15 @@ def SetSize():
 
 def GenerateImage():
     userInput = input("Give a description of the desired image : ")
+    # Remove space at the end of the string
+    userInput = userInput.rstrip()
     # Verify the input
-    if userInput == "quit" or userInput == "q":
+    if userInput.lower() == "quit" or userInput.lower() == "q":
         return 0
-    if userInput == "size":
+    if userInput.lower() == "size":
         SetSize()
         return GenerateImage()
-    if userInput == "chat":
+    if userInput.lower() == "chat":
         return Chat()
 
     # JSON data to send to the API
@@ -70,14 +74,16 @@ def GenerateImage():
 
 def Chat():
     userInput = input("You : ")
+    # Remove space at the end of the string
+    userInput = userInput.rstrip()
 
     # Verify the input
-    if userInput == "quit" or userInput == "q":
+    if userInput.lower() == "quit" or userInput.lower() == "q":
         return 0
-    if userInput == "size":
+    if userInput.lower() == "size":
         SetSize()
         return Chat()
-    if userInput == "image":
+    if userInput.lower() == "image":
         return GenerateImage()
 
     # JSON data to send to the API
